@@ -109,5 +109,5 @@ app.post("/search", (req, res) => {
 
 // ── Start server ───────────────────────────────────────────────────────────
 app.listen(PORT, () => {
-  console.log(`🚀 Crypto Tracker running at http://localhost:${3000}`);
+  console.log(`🚀 Crypto Tracker running at http://localhost:${PORT}`);
 });
