@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptoLens — Live Market Prices</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Background grid -->
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <!-- ── Header ── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">CryptoLens</span>
+      </div>
+      <form class="search-bar" action="/search" method="POST">
+        <input
+          type="text"
+          name="symbol"
+          placeholder="Enter symbol e.g. BTC, ETH, SOL…"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button type="submit">LOOKUP →</button>
+      </form>
+    </div>
+  </header>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-label">BLOCKCHAIN.COM MARKET DATA</div>
+    <h1 class="hero-title">Real-Time<br /><em>Crypto Prices</em></h1>
+    <p class="hero-sub">Live ticker data via the Blockchain.com Exchange API · Powered by Express + Axios</p>
+  </section>
+
+  <main class="main-content">
+
+    <% if (error) { %>
+      <div class="alert-error">⚠ <%= error %></div>
+    <% } %>
+
+    <!-- ── Coin Grid ── -->
+    <div class="coins-grid">
+      <% coins.forEach(function(coin) { %>
+        <a class="coin-card" href="/coin/<%= coin.symbol %>">
+          <div class="coin-icon"><%= coin.icon %></div>
+          <div class="coin-meta">
+            <span class="coin-name"><%= coin.name %></span>
+            <span class="coin-symbol"><%= coin.symbol %></span>
+          </div>
+          <div class="coin-price-block">
+            <% if (coin.price !== null) { %>
+              <div class="coin-price">$<%= Number(coin.price).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></div>
+              <div class="coin-change <%= (coin.change >= 0) ? 'positive' : 'negative' %>">
+                <%= coin.change >= 0 ? '▲' : '▼' %> <%= Math.abs(Number(coin.change)).toFixed(2) %>%
+              </div>
+            <% } else { %>
+              <div class="coin-price na">N/A</div>
+            <% } %>
+          </div>
+          <div class="coin-arrow">→</div>
+        </a>
+      <% }); %>
+    </div>
+
+    <!-- ── API Info ── -->
+    <section class="api-info">
+      <div class="api-info-inner">
+        <div class="api-badge">API</div>
+        <div>
+          <strong>Blockchain.com Exchange REST API v3</strong>
+          <span>GET /tickers · GET /tickers/{symbol}</span>
+        </div>
+        <a class="api-link" href="https://api.blockchain.com/v3/#/unauthenticated/getTickerBySymbol" target="_blank" rel="noopener">Docs ↗</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <span>CryptoLens · Built with <strong>Node.js + Express + Axios</strong> · Data from <strong>Blockchain.com</strong></span>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
